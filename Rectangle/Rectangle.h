@@ -17,6 +17,7 @@ private:
 public:
     Shape():no(count){count++;}//默认构造器，将计数器递增，no为生成了第几个shape的次序
     int getNo() const { return no;}//获取编号
+    virtual ~Shape(){}//这里必须为virtual
 protected://由子类才能访问的方法和变量
     int no;
     void setNo(int n) {no = n;}//设置自己的编号
@@ -69,20 +70,37 @@ public:
  * 方法实现
  */
 Rectangle::Rectangle(int width, int height, int x, int y):
-        width(width), height(height), leftUp(new Point(x, y)) {
+       Shape(), width(width), height(height), leftUp(new Point(x, y)) {
 
 }
 
-Rectangle::Rectangle(const Rectangle &other):
-        width(other.width), height(other.height), leftUp(new Point(*other.leftUp)){
+Rectangle::Rectangle(const Rectangle &other):Shape(),
+        width(other.width), height(other.height){
+            if(other.leftup = nullptr)leftup = nullptr;//判断是否为空指针
+            else leftup = new Point(other.x, other.y);
 }
 
 Rectangle &Rectangle::operator=(const Rectangle &other) {
     if (this == &other) return *this;//检查自赋值
     width = other.width;
     height = other.height;
-    delete leftUp;//删除自己的
-    leftUp = new Point(*other.leftUp);//赋值对方的
+    Shape::operator=(other);//拷贝父类
+    if (leftup == nullptr) {//自身坐标为空的话
+        if(other.leftup != null) leftup = new Point(other.x, other.y);//拷贝对象坐标不为空
+    }
+    else {
+        if(ohter.leftup == null) {
+            delete leftup;
+            leftup = nullptr;
+        }
+        else {
+            delete leftup;
+            leftup = new Point(other.x, other.y);
+        }
+    }
+    //错误做法
+   // delete leftUp;//删除自己的
+    //leftUp = new Point(*other.leftUp);//赋值对方的
     return *this;
 }
 
