@@ -215,3 +215,122 @@ template <typename T> int compare(const T&, const T&);
      void func(int(*) (const int&, const int&));
      func(compare<int>); // ok: explicitly specify which version of compare
 ```
+
+---
+
+### 三.模板的特化
+1.类模板特化有时为了需要,针对特定的类型,需要对模板进行特化,也就是特殊处理.例如,stack类模板针对bool类型,因为实际上bool类型只需要一个二进制位，就可以对其进行存储,使用一个字或者一个字节都是浪费存储空间的.
+
+```c++
+template <class T>
+class stack {};
+template < >
+class stack<bool> { //…// };
+```
+
+上述定义中template < >告诉编译器这是一个特化的模板。
+
+**2. 函数模板的特化**
+
+看下面的例子
+
+```c++
+main()
+{
+  int highest = mymax(5,10);
+  char c = mymax(‘a’, ’z’);
+  const char* p1 = “hello”;
+  const char* p2 = “world”;
+  const char* p = mymax(p1,p2);
+}
+```
+
+前面两个mymax都能返回正确的结果.而第三个却不能,因为,此时mymax直接比较两个指针p1 和 p2 而不是其指向的内容.
+针对这种情况,当**mymax函数的参数类型为const char 时,需要特化。**
+
+
+```c++
+template <class T>
+T mymax(const T t1, const T t2)
+{
+   return t1 < t2 ? t2 : t1;
+}
+
+template <>
+const char* mymax(const char* t1,const char* t2)
+{
+   return (strcmp(t1,t2) < 0) ? t2 : t1;
+}
+```
+
+现在mymax(p1,p2)能够返回正确的结果了。
+
+---
+
+### 四.模板的偏特化
+
+模板的偏特化是指需要根据模板的某些但不是全部的参数进行特化
+**1. 类模板的偏特化**
+
+例如c++标准库中的类vector的定义
+
+
+```c++
+template <class T, class Allocator>
+class vector { // … // };
+template <class Allocator>
+class vector<bool, Allocator> { //…//};
+```
+
+这个偏特化的例子中，一个参数被绑定到bool类型，而另一个参数仍未绑定需要由用户指定。
+
+**2.函数模板的偏特化**
+
+严格的来说，函数模板并不支持偏特化，但由于可以对函数进行重载，所以可以达到类似于类模板偏特化的效果。
+
+
+```c++
+template <class T> void f(T);  (a)
+```
+
+  根据重载规则，对（a）进行重载
+
+```c++
+template < class T> void f(T*);  (b)
+```
+
+ 如果将（a）称为基模板，那么（b）称为对基模板（a）的重载，而非对（a）的偏特化。。
+ 
+**3.模板特化时的匹配规则**
+
+**类模板的匹配规则:**
+
+最优化的优于次特化的，即模板参数最精确匹配的具有最高的优先权
+例子：
+
+```c++
+template <class T> class vector{//…//}; // (a)  普通型
+template <class T> class vector<T*>{//…//};  // (b) 对指针类型特化
+template <>   class vector <void*>{//…//};  // (c) 对void*进行特化
+```
+
+每个类型都可以用作普通型（a）的参数，但只有指针类型才能用作（b）的参数，而只有void*才能作为(c)的参数
+(2) 函数模板的匹配规则
+非模板函数具有最高的优先权。如果不存在匹配的非模板函数的话，那么最匹配的和最特化的函数具有高优先权
+例子：
+
+
+```c++
+template <class T> void f(T);  // (d)
+template <class T> void f(int, T, double); // (e)
+template <class T> void f(T*);  // (f)
+template <> void f<int> (int) ; // (g)
+void f(double);  // (h)
+bool b;
+int i;
+double d;
+f(b); // 以 T = bool 调用 （d）
+f(i,42,d) // 以 T = int 调用（e）
+f(&i) ; // 以 T = int* 调用（f）
+f(d);  //  调用（g）
+```
