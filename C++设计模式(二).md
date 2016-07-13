@@ -13,7 +13,9 @@
 
 不修改代码的话，是无法扩展的。
 
-![image](http://note.youdao.com/yws/res/1101/WEBRESOURCEcaa68163790da2eb17d51df19ca5e686)
+
+![](https://github.com/MrFighting/CPP_GeekBand/blob/master/Date/SimpleFactory.jpg)
+
 
 **工厂方法**
 
@@ -21,7 +23,7 @@
 
 在同一等级结构中，支持增加任意产品。
 
-![image](http://note.youdao.com/yws/res/1115/WEBRESOURCE438d45448b14b2e06f27d6c2e212e285)
+![](https://github.com/MrFighting/CPP_GeekBand/blob/master/Date/FactoryMethod.jpg)
 
 **抽象工厂**
 
@@ -29,7 +31,7 @@
 
 应对产品族概念而生，增加新的产品线很容易，但是无法增加新的产品。
 
-![image](http://note.youdao.com/yws/res/1119/WEBRESOURCE7fef2b707aa73860a6e64226a979b8a2)
+![](https://github.com/MrFighting/CPP_GeekBand/blob/master/Date/AbstractFactory.jpg)
 
 **小结**
 
@@ -62,7 +64,7 @@
 **例子:** 举一个生活中最常见的例子！就如我们的球类吧！如排球，如果只是想拿着排球在自行车老大爷那说点好的来打气是行不通，因为那的打气筒是无法往你的排球里灌入气体的，所以你得必备一个排球专用的气针才可啊！而在此“气针”则是“适配”。
 
 
-![image](http://note.youdao.com/yws/res/1145/WEBRESOURCE25e6151b522d90e684cc3eb2b381bdb7)
+![image](https://github.com/MrFighting/CPP_GeekBand/blob/master/Date/adapter.png)
 
 > 模式所涉及的角色有：
 > 
@@ -126,7 +128,7 @@ public:
 > 
 > 真实角色：实现抽象角色，定义真实角色所要实现的业务逻辑，供代理角色调用。
 
-![image](http://note.youdao.com/yws/res/1178/WEBRESOURCEf64ea8dd028756ba970fe3660e7ec570)
+![](https://github.com/MrFighting/CPP_GeekBand/blob/master/Date/proxy.png)
 
 > **什么时候使用代理模式**
 > 
